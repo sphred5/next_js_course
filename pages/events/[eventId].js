@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
-import {getEventById} from '../../dummy-data'
+import { getEventById } from '../../dummy-data'
 import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
+import ErrorAlert from '../../components/ui/error-alert';
 
 
 const EventDetail = () => {
@@ -10,24 +11,26 @@ const EventDetail = () => {
   const eventId = router.query.eventId;
   const event = getEventById(eventId);
 
-  if(event === undefined || event === null) {
+  if (!event) {
     return (
-      <p>No Event Found</p>
+      <ErrorAlert>
+        <p>No Event Found</p>
+      </ErrorAlert>
     )
-  } 
+  }
   console.log(event)
   return (
     <>
-    <EventSummary title={event.title} />
-    <EventLogistics 
-    date = {event.date}
-    address={event.location}
-    image={event.image}
-    imageAlt={event.title}
-    />
-    <EventContent>
-      <p>{event.description}</p>
-    </EventContent>
+      <EventSummary title={event.title} />
+      <EventLogistics
+        date={event.date}
+        address={event.location}
+        image={event.image}
+        imageAlt={event.title}
+      />
+      <EventContent>
+        <p>{event.description}</p>
+      </EventContent>
     </>
   )
 }
