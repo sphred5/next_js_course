@@ -5,7 +5,7 @@ import ResultsTitle from '../../components/events/results-title';
 import Button from "../../components/ui/button";
 import ErrorAlert from "../../components/ui/error-alert";
 
-const FilteredEvents = () => {
+const FilteredEvents = (props) => {
   const router = useRouter();
   const filterData = router.query.slug;
 
@@ -40,10 +40,11 @@ const FilteredEvents = () => {
     )
   }
 
-  const filteredEvents = getFilteredEvents({
+  const filteredEvents = getFilteredEvents(props.events, {
     year: numYear,
     month: numMonth
   });
+
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <>
@@ -66,3 +67,19 @@ const FilteredEvents = () => {
   )
 }
 export default FilteredEvents
+
+export async function getServerSideProps(context) {
+  
+  const response = await fetch(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events.json`);
+  const data = await response.json();
+  const events = [];
+  for (let event in data){
+    events.push({id: event, ...data[event]})
+  }
+  console.log(events)
+  return {
+    props: {
+      events:events 
+    }
+  }
+}
