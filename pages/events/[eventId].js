@@ -2,6 +2,7 @@ import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
 import ErrorAlert from '../../components/ui/error-alert';
+import {getAllEvents, getEventById } from '../../helpers/api-utils';
 
 const EventDetail = (props) => {
   const event = props.event;
@@ -29,17 +30,26 @@ const EventDetail = (props) => {
 }
 export default EventDetail;
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
+
   const {params} = context;
   const eventId = params.eventId;
-
-  const response = await fetch(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events/${eventId}.json`);
-  const data = await response.json();
+  const event = await getEventById(eventId);
 
   return {
     props : {
-      event: {id : eventId, ...data} 
+      event: {id : eventId, ...event} 
     }
+  }
+}
+
+export async function getStaticPaths() {
+  const events = await getAllEvents();
+  const paths = events.map(event => ({params: {eventId : event.id}}))
+  
+  return {
+    paths: paths, 
+    fallback: false
   }
 }
 

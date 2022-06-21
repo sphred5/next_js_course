@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { getFilteredEvents } from '../../dummy-data';
+import { getFilteredEvents } from '../../helpers/api-utils';
 import EventsList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
 import Button from "../../components/ui/button";
@@ -76,8 +76,8 @@ export async function getServerSideProps(context) {
   for (let event in data){
     events.push({id: event, ...data[event]})
   }
-  console.log(events)
   return {
+    
     props: {
       events:events 
     }

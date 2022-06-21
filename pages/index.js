@@ -1,26 +1,23 @@
 import EventList from '../components/events/event-list.js';
+import getFeaturedEvents from '../helpers/api-utils/getFeaturedEvents';
+
 function HomePage(props) {
   return (
     <div>
-      <EventList items={props.featuredEvents}/>
+      <EventList items={props.events}/>
     </div>
   )
 }
-export default HomePage
 
 export async function getStaticProps(){
-
-  const response = await fetch(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events.json`);
-  const data = await response.json();
-  const events = [];
-
-  for (let event in data){
-    events.push({id : event, ...data[event]})
-  }
-  const featuredEvents = events.filter(event => event.isFeatured);
+  
+  const featuredEvents = await getFeaturedEvents()
+ 
   return {
     props:{
-      featuredEvents :featuredEvents 
+      evetns : featuredEvents 
     }
   }
 }
+
+export default HomePage
