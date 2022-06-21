@@ -18,7 +18,6 @@ export async function getStaticProps(){
     events.push({id : event, ...data[event]})
   }
   const featuredEvents = events.filter(event => event.isFeatured);
-  console.log(featuredEvents)
   return {
     props:{
       featuredEvents :featuredEvents 
