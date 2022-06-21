@@ -4,7 +4,6 @@ import EventsSearch from '../../components/events/events-search';
 import { useRouter } from 'next/router';
 function Events() {
   const router = useRouter();
-  const events = getAllEvents();
   function findEventsHandler(year, month) {
     const fullPath = `/events/${year}/${month}`; 
     router.push(fullPath);
@@ -18,4 +17,25 @@ function Events() {
     </>
   )
 }
-export default Events
+
+export default Events;
+
+export async function getStaticProps(context) {
+  
+  const response = await fetch(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events.json`)
+  const data = await response.json();
+  const formattedEvents = [];
+  
+  for (let event in data) {
+
+   formattedEvents.push({id: event, ...data[event]})
+   
+  }
+
+  return {
+    props: {
+      events: formattedEvents
+    }
+  }
+
+}
