@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { getFilteredEvents } from '../../helpers/api-utils';
+import { getAllEvents, getFilteredEvents } from '../../helpers/api-utils';
 import EventsList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
 import Button from "../../components/ui/button";
@@ -69,13 +69,9 @@ const FilteredEvents = (props) => {
 export default FilteredEvents
 
 export async function getServerSideProps(context) {
-  
-  const response = await fetch(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events.json`);
-  const data = await response.json();
-  const events = [];
-  for (let event in data){
-    events.push({id: event, ...data[event]})
-  }
+
+  const events = await getAllEvents();
+
   return {
     
     props: {

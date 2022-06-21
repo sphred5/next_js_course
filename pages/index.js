@@ -1,5 +1,5 @@
 import EventList from '../components/events/event-list.js';
-import getFeaturedEvents from '../helpers/api-utils/getFeaturedEvents';
+import {getFeaturedEvents} from '../helpers/api-utils';
 
 function HomePage(props) {
   return (
@@ -15,7 +15,7 @@ export async function getStaticProps(){
  
   return {
     props:{
-      evetns : featuredEvents 
+      events : featuredEvents 
     }
   }
 }

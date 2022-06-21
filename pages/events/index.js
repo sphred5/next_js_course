@@ -1,6 +1,7 @@
 import EventList from '../../components/events/event-list';
 import EventsSearch from '../../components/events/events-search';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/dist/client/router';
+import { getAllEvents } from '../../helpers/api-utils';
 function Events(props) {
   const router = useRouter();
   function findEventsHandler(year, month) {
@@ -19,21 +20,13 @@ function Events(props) {
 
 export default Events;
 
-export async function getStaticProps(context) {
-  
-  const response = await fetch(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events.json`)
-  const data = await response.json();
-  const formattedEvents = [];
-  
-  for (let event in data) {
-
-   formattedEvents.push({id: event, ...data[event]})
-   
-  }
+export async function getStaticProps() {
+  const events = await getAllEvents(); 
   return {
     props: {
-      events: formattedEvents
-    }
+      events: events
+    },
+    revalidate : 60 
   }
 
 }
