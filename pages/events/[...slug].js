@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router"
-import { getAllEvents, getFilteredEvents } from '../../helpers/api-utils';
+import { getAllEvents} from '../../helpers/api-utils';
 import EventsList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
 import Button from "../../components/ui/button";
 import ErrorAlert from "../../components/ui/error-alert";
 import useSWR from "swr";
 
-const FilteredEvents = (props) => {
+const FilteredEvents = () => {
   const [loadedEvents, setLoadedEvents] = useState();
   const router = useRouter();
   const filterData = router.query.slug;
 
-  const { data, error } = useSWR(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events.json`);
+  const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_DUMMY_API_ENDPOINT}/events.json`, (url) => fetch(url).then(res => res.json()));
   useEffect(() => {
     if (data) {
       const events = [];
@@ -58,8 +58,6 @@ const FilteredEvents = (props) => {
   }
 
 
-  const { year, month } = dateFilter;
-  const events = await getAllEvents();
   const filteredEvents = loadedEvents.filter((event) => {
     const eventDate = new Date(event.date);
     return eventDate.getFullYear() === numYear && eventDate.getMonth() === numMonth - 1;
