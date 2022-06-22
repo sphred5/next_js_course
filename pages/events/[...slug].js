@@ -1,16 +1,34 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router"
 import { getAllEvents, getFilteredEvents } from '../../helpers/api-utils';
 import EventsList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
 import Button from "../../components/ui/button";
 import ErrorAlert from "../../components/ui/error-alert";
+import useSWR from "swr";
 
 const FilteredEvents = (props) => {
+  const [loadedEvents, setLoadedEvents] = useState();
   const router = useRouter();
   const filterData = router.query.slug;
 
-  if (filterData === undefined || filterData === null) {
-    return <p className='center'>Loading....</p>
+  const { data, error } = useSWR(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events.json`);
+  useEffect(() => {
+    if (data) {
+      const events = [];
+
+      for (const key in data) {
+        events.push({
+          id: key,
+          ...data[key],
+        });
+      }
+      setLoadedEvents(events);
+    }
+  }, [data])
+
+  if (!loadedEvents) {
+    return <p className="center">Loading...</p>
   }
 
   const filteredYear = filterData[0];
@@ -24,7 +42,8 @@ const FilteredEvents = (props) => {
     numYear > 2030 ||
     numYear < 2021 ||
     numMonth < 1 ||
-    numMonth > 12
+    numMonth > 12 ||
+    error
   ) {
     return (
       <>
@@ -34,15 +53,16 @@ const FilteredEvents = (props) => {
         <div className="center">
           <Button link="/events">Show All Events</Button>
         </div>
-
-
       </>
     )
   }
 
-  const filteredEvents = getFilteredEvents(props.events, {
-    year: numYear,
-    month: numMonth
+
+  const { year, month } = dateFilter;
+  const events = await getAllEvents();
+  const filteredEvents = loadedEvents.filter((event) => {
+    const eventDate = new Date(event.date);
+    return eventDate.getFullYear() === numYear && eventDate.getMonth() === numMonth - 1;
   });
 
   if (!filteredEvents || filteredEvents.length === 0) {
@@ -66,16 +86,5 @@ const FilteredEvents = (props) => {
     </>
   )
 }
-export default FilteredEvents
+export default FilteredEvents;
 
-export async function getServerSideProps(context) {
-
-  const events = await getAllEvents();
-
-  return {
-    
-    props: {
-      events:events 
-    }
-  }
-}
