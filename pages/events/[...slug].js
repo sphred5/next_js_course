@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router"
-import { getAllEvents} from '../../helpers/api-utils';
+import Head from "next/head";
 import EventsList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
 import Button from "../../components/ui/button";
@@ -13,10 +13,11 @@ const FilteredEvents = () => {
   const filterData = router.query.slug;
 
   const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_DUMMY_API_ENDPOINT}/events.json`, (url) => fetch(url).then(res => res.json()));
+
   useEffect(() => {
     if (data) {
       const events = [];
-
+      
       for (const key in data) {
         events.push({
           id: key,
@@ -26,7 +27,6 @@ const FilteredEvents = () => {
       setLoadedEvents(events);
     }
   }, [data])
-
   if (!loadedEvents) {
     return <p className="center">Loading...</p>
   }
@@ -79,6 +79,10 @@ const FilteredEvents = () => {
   const date = new Date(numYear, numMonth - 1);
   return (
     <>
+      <Head>
+        <title>{`Filtered Events ${numMonth}/${numYear}`}</title>
+        <meta name="description" content={`All events for ${numMonth}/${numYear}`} />
+      </Head>
       <ResultsTitle date={date} />
       <EventsList items={filteredEvents} date={date} />
     </>
