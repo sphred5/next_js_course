@@ -7,7 +7,7 @@ function HomePage(props) {
     <div>
       <Head>
         <title>Next JS Events</title>
-        <meta name="description" content="Find a lof of events that allow you to evolve..."/>
+        <meta name="description" content="Find a lot of events that allow you to evolve..."/>
       </Head>
       <EventList items={props.events}/>
     </div>

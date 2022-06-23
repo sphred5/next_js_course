@@ -1,5 +1,6 @@
 export async function getAllEvents() {
-  const response = await fetch(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events.json`);
+  console.log("URL", `${process.env.NEXT_PUBLIC_DUMMY_API_ENDPOINT}/events.json`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_DUMMY_API_ENDPOINT}/events.json`);
   const data = await response.json();
   const events = [];
 
@@ -15,7 +16,7 @@ export async function getFeaturedEvents() {
 }
 
 export async function getEventById(eventId) {
-   const response = await fetch(`${process.env.REACT_APP_DUMMY_API_ENDPOINT}/events/${eventId}.json`);
+   const response = await fetch(`${process.env.NEXT_PUBLIC_DUMMY_API_ENDPOINT}/events/${eventId}.json`);
    return await response.json();
 }
 
