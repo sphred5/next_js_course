@@ -17,7 +17,7 @@ const FilteredEvents = () => {
   useEffect(() => {
     if (data) {
       const events = [];
-      
+
       for (const key in data) {
         events.push({
           id: key,
@@ -26,9 +26,20 @@ const FilteredEvents = () => {
       }
       setLoadedEvents(events);
     }
+
+
+    let pageHeadData = (
+      <Head>
+        <title>{`Filtered Events ${numMonth}/${numYear}`}</title>
+        <meta name="description" content={`A list of filtered events`} />
+      </Head>
+    )
   }, [data])
   if (!loadedEvents) {
-    return <p className="center">Loading...</p>
+    return <>
+      {pageHeadData}
+      <p className="center">Loading...</p>
+    </>
   }
 
   const filteredYear = filterData[0];
@@ -36,6 +47,13 @@ const FilteredEvents = () => {
 
   const numYear = +filteredYear;
   const numMonth = +filteredMonth;
+  pageHeadData = (
+    <Head>
+      <title>{`Filtered Events ${numMonth}/${numYear}`}</title>
+      <meta name="description" content={`All events for ${numMonth}/${numYear}`} />
+    </Head>
+  )
+
 
   if (isNaN(numYear) ||
     isNaN(numMonth) ||
@@ -47,6 +65,7 @@ const FilteredEvents = () => {
   ) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p className="center">Invalid Filter Please Adjust Your Values!</p>
         </ErrorAlert>
@@ -66,6 +85,7 @@ const FilteredEvents = () => {
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events found for the chosen filter!</p>
         </ErrorAlert>
@@ -79,10 +99,7 @@ const FilteredEvents = () => {
   const date = new Date(numYear, numMonth - 1);
   return (
     <>
-      <Head>
-        <title>{`Filtered Events ${numMonth}/${numYear}`}</title>
-        <meta name="description" content={`All events for ${numMonth}/${numYear}`} />
-      </Head>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventsList items={filteredEvents} date={date} />
     </>

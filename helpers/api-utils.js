@@ -1,5 +1,4 @@
 export async function getAllEvents() {
-  console.log("URL", `${process.env.NEXT_PUBLIC_DUMMY_API_ENDPOINT}/events.json`)
   const response = await fetch(`${process.env.NEXT_PUBLIC_DUMMY_API_ENDPOINT}/events.json`);
   const data = await response.json();
   const events = [];
