@@ -2,9 +2,8 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
-    <Html>
+    <Html lag="en">
       <Head>
-        <title>Next Events</title>
         <meta name="description" content="Next Events" />
         <meta content="inital-scale=1.0, width=device-width" />
       </Head>

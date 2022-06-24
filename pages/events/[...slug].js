@@ -27,26 +27,30 @@ const FilteredEvents = () => {
       setLoadedEvents(events);
     }
 
-
-    let pageHeadData = (
-      <Head>
-        <title>{`Filtered Events ${numMonth}/${numYear}`}</title>
-        <meta name="description" content={`A list of filtered events`} />
-      </Head>
-    )
   }, [data])
+  
+  let pageHeadData = (
+    <Head>
+      <title>{`A list of filtered events`}</title>
+      <meta name="description" content={`A list of filtered events`} />
+    </Head>
+  )
+
+
   if (!loadedEvents) {
     return <>
       {pageHeadData}
       <p className="center">Loading...</p>
     </>
   }
-
   const filteredYear = filterData[0];
   const filteredMonth = filterData[1];
 
   const numYear = +filteredYear;
   const numMonth = +filteredMonth;
+
+
+
   pageHeadData = (
     <Head>
       <title>{`Filtered Events ${numMonth}/${numYear}`}</title>
