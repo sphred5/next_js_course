@@ -3,7 +3,7 @@ import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
 import Head from 'next/head';
 import {getFeaturedEvents, getEventById } from '../../helpers/api-utils';
-
+import Comments from "../../components/input/comments";
 const EventDetail = (props) => {
   const event = props.event;
   if (!event) {
@@ -29,6 +29,7 @@ const EventDetail = (props) => {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id}/>
     </>
   )
 }
