@@ -1,11 +1,10 @@
 export default function handler(req, res){
-  const eventId = req.query.eventId;
 
-  if (req.methos === "POST"){
+  if (req.method === "POST"){
     const {email, name, text} = req.body;
 
-    if(!email.includes("@") 
-    || !name 
+    if(!email.includes("@") || 
+    !name 
     || name.trim() === "" 
     || !text 
     || text.trim() === "") {
