@@ -5,6 +5,7 @@ import NotificationContext from '../../store/notification-context';
 function NewsletterRegistration() {
   const emailInputRef = useRef();
   const notificationCtx = useContext(NotificationContext);
+ 
   function registrationHandler(event) {
     event.preventDefault();
     const enteredEmail = emailInputRef.current.value;
