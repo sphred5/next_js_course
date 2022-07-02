@@ -17,8 +17,8 @@ function Comments(props) {
       fetch(`/api/comments/${eventId}`)
       .then(response => response.json())
       .then(data => {
-        setIsLoading(false)
         setComments(data.comments)
+        setIsLoading(false);
       })
     }
   }, [showComments, eventId ]);
@@ -66,9 +66,6 @@ function Comments(props) {
     })
   }
 
-  if(isLoading){
-    return <p>Loading...</p>;
-  }
 
   return (
     <section className={classes.comments}>
@@ -76,7 +73,8 @@ function Comments(props) {
         {showComments ? 'Hide' : 'Show'} Comments
       </button>
       {showComments && <NewComment onAddComment={addCommentHandler} />}
-      {showComments && comments && <CommentList items={comments} />}
+      {showComments && !isLoading && comments && <CommentList items={comments} />}
+      {showComments && isLoading && <p>Loading...</p>}
     </section>
   );
 }
