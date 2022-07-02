@@ -28,6 +28,13 @@ function Comments(props) {
   }
 
   function addCommentHandler(commentData) {
+
+    notificationCtx.showNotification({
+      title: 'Sending comment..',
+      message: "Your comment is being stored into a database",
+      status: "pending"
+    })
+
     fetch(`/api/comments/${eventId}`, {
       method: 'POST',
       body: JSON.stringify(commentData),
@@ -40,7 +47,7 @@ function Comments(props) {
       return response.json()
       } 
     return response.json().then(data => {
-          throw new Error(data.message || 'Something went wrong');
+        throw new Error(data.message || 'Something went wrong');
     });
   })
     .then(data => {

@@ -1,10 +1,8 @@
 import { useRef, useState, useContext } from 'react';
 import classes from './new-comment.module.css';
-import NotificationContext from "../../store/notification-context.js";
 
 function NewComment(props) {
   const [isInvalid, setIsInvalid] = useState(false);
-  const notificationCtx = useContext(NotificationContext)
   const emailInputRef = useRef();
   const nameInputRef = useRef();
   const commentInputRef = useRef();
@@ -12,12 +10,6 @@ function NewComment(props) {
   function sendCommentHandler(event) {
     event.preventDefault();
     
-    notificationCtx.showNotification({
-      title: 'Adding comment..',
-      message: "Adding comment to db",
-      status: "pending"
-    })
-
     const enteredEmail = emailInputRef.current.value;
     const enteredName = nameInputRef.current.value;
     const enteredComment = commentInputRef.current.value;
