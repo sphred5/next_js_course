@@ -8,15 +8,20 @@ function Comments(props) {
   const { eventId } = props;
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const notificationCtx = useContext(NotificationContext);
-
+  
   useEffect(() => {
     if(showComments){
+     setIsLoading(true); 
       fetch(`/api/comments/${eventId}`)
       .then(response => response.json())
-      .then(data => setComments(data.comments))
+      .then(data => {
+        setIsLoading(false)
+        setComments(data.comments)
+      })
     }
-  }, [showComments, eventId]);
+  }, [showComments, eventId ]);
 
   function toggleCommentsHandler() {
     setShowComments((prevStatus) => !prevStatus);
@@ -52,6 +57,10 @@ function Comments(props) {
           status: 'error'
         })
     })
+  }
+
+  if(isLoading){
+    return <p>Loading...</p>;
   }
 
   return (
