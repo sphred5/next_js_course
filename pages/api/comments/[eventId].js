@@ -1,8 +1,8 @@
+import {useContext} from 'react';
 import { getAllDocuments, connectDatabase, insertDocument } from "../../../helpers/db-utils";
 
 export default async function handler(req, res) {
   const eventId = req.query.eventId;
-
   let client;
 
   try {
